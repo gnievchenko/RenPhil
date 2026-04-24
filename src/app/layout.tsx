@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RenPhil — Rent a laboratory",
+  title: "LabShare — Rent laboratory equipment in the UK",
   description:
-    "RenPhil is the easiest way to find and book lab space, equipment, and bench time from scientists around the world.",
+    "LabShare is a UK marketplace for renting specific laboratory equipment — bioreactors, mass spectrometers, 3D printers and more — by the day from scientists and shared labs.",
 };
 
 export default function RootLayout({

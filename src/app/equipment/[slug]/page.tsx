@@ -1,44 +1,44 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLabBySlug, labs } from "@/lib/labs";
+import Link from "next/link";
+import {
+  equipment,
+  formatGBP,
+  getEquipmentBySlug,
+} from "@/lib/equipment";
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function generateStaticParams() {
-  return labs.map((lab) => ({ slug: lab.slug }));
+  return equipment.map((item) => ({ slug: item.slug }));
 }
 
-export default async function LabDetailPage({
+export default async function EquipmentDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const lab = getLabBySlug(slug);
-  if (!lab) notFound();
+  const item = getEquipmentBySlug(slug);
+  if (!item) notFound();
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="inline-block h-6 w-6 rounded-md bg-gradient-to-br from-fuchsia-500 to-orange-400" />
-            <span className="text-lg font-semibold tracking-tight">RenPhil</span>
-          </Link>
-          <Link
-            href="/"
-            className="text-sm text-muted-foreground hover:text-foreground"
-          >
-            ← Back to all labs
-          </Link>
-        </div>
-      </header>
+      <Header />
 
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8">
+        <Link
+          href="/"
+          className="mb-6 inline-block text-sm text-muted-foreground hover:text-foreground"
+        >
+          ← Back to all equipment
+        </Link>
+
         <div
           className="aspect-[21/9] w-full overflow-hidden rounded-2xl"
           style={{
-            backgroundImage: `linear-gradient(135deg, ${lab.gradient[0]}, ${lab.gradient[1]})`,
+            backgroundImage: `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})`,
           }}
           aria-hidden="true"
         />
@@ -47,47 +47,52 @@ export default async function LabDetailPage({
           <div className="space-y-8">
             <div>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">{lab.type}</Badge>
+                <Badge
+                  variant="secondary"
+                  className="text-[11px] uppercase tracking-wide"
+                >
+                  {item.category}
+                </Badge>
                 <span className="text-sm text-muted-foreground">
-                  {lab.location}
+                  {item.city}, United Kingdom
                 </span>
               </div>
               <h1 className="mt-3 text-4xl font-semibold tracking-tight">
-                {lab.title}
+                {item.title}
               </h1>
               <p className="mt-3 text-lg text-muted-foreground">
-                {lab.tagline}
+                {item.tagline}
               </p>
               <p className="mt-4 text-sm text-muted-foreground">
-                ★ {lab.rating.toFixed(2)} · {lab.reviews} reviews · Hosted by{" "}
-                <span className="text-foreground">{lab.hostName}</span>
+                ★ {item.rating.toFixed(2)} · {item.reviews} reviews · Hosted by{" "}
+                <span className="text-foreground">{item.hostName}</span>
               </p>
             </div>
 
             <section className="space-y-3">
               <h2 className="text-xl font-semibold tracking-tight">
-                About this lab
+                About this equipment
               </h2>
               <p className="leading-relaxed text-muted-foreground">
-                {lab.description}
+                {item.description}
               </p>
             </section>
 
             <section className="space-y-3">
               <h2 className="text-xl font-semibold tracking-tight">
-                Equipment
+                Specifications
               </h2>
               <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                {lab.equipment.map((item) => (
+                {item.specs.map((spec) => (
                   <li
-                    key={item}
+                    key={spec}
                     className="flex items-start gap-2 text-sm text-muted-foreground"
                   >
                     <span
                       className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/40"
                       aria-hidden="true"
                     />
-                    {item}
+                    {spec}
                   </li>
                 ))}
               </ul>
@@ -95,16 +100,16 @@ export default async function LabDetailPage({
 
             <section className="space-y-3">
               <h2 className="text-xl font-semibold tracking-tight">
-                Highlights
+                What's included
               </h2>
               <ul className="space-y-2">
-                {lab.highlights.map((item) => (
+                {item.highlights.map((h) => (
                   <li
-                    key={item}
+                    key={h}
                     className="flex items-start gap-2 text-sm text-muted-foreground"
                   >
                     <span aria-hidden="true">✓</span>
-                    {item}
+                    {h}
                   </li>
                 ))}
               </ul>
@@ -112,21 +117,21 @@ export default async function LabDetailPage({
 
             <section className="space-y-3">
               <h2 className="text-xl font-semibold tracking-tight">
-                Meet your host
+                Your provider
               </h2>
               <Card>
                 <CardContent className="flex items-start gap-4 p-5">
                   <div
                     className="h-12 w-12 shrink-0 rounded-full"
                     style={{
-                      backgroundImage: `linear-gradient(135deg, ${lab.gradient[0]}, ${lab.gradient[1]})`,
+                      backgroundImage: `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})`,
                     }}
                     aria-hidden="true"
                   />
                   <div>
-                    <p className="font-medium">{lab.hostName}</p>
+                    <p className="font-medium">{item.hostName}</p>
                     <p className="text-sm text-muted-foreground">
-                      {lab.hostBio}
+                      {item.hostBio}
                     </p>
                   </div>
                 </CardContent>
@@ -134,22 +139,22 @@ export default async function LabDetailPage({
             </section>
           </div>
 
-          <aside className="lg:sticky lg:top-6 lg:self-start">
+          <aside className="lg:sticky lg:top-24 lg:self-start">
             <Card>
               <CardContent className="space-y-4 p-6">
                 <div className="flex items-baseline gap-1">
                   <span className="text-2xl font-semibold">
-                    ${lab.pricePerDay}
+                    {formatGBP(item.pricePerDay)}
                   </span>
                   <span className="text-sm text-muted-foreground">/ day</span>
                 </div>
                 <div className="text-sm text-muted-foreground">
-                  ★ {lab.rating.toFixed(2)} · {lab.reviews} reviews
+                  ★ {item.rating.toFixed(2)} · {item.reviews} reviews
                 </div>
                 <button
                   type="button"
                   disabled
-                  className="w-full cursor-not-allowed rounded-full bg-foreground py-3 text-sm font-medium text-background opacity-60"
+                  className="w-full cursor-not-allowed rounded-full bg-gradient-to-r from-[#fa709a] to-[#fee140] py-3 text-sm font-medium text-white opacity-75"
                 >
                   Request booking
                 </button>
@@ -162,13 +167,7 @@ export default async function LabDetailPage({
         </div>
       </main>
 
-      <footer className="border-t">
-        <div className="mx-auto max-w-6xl px-6 py-8 text-sm text-muted-foreground">
-          <p>
-            RenPhil · A marketplace for laboratory space · Built on Vercel
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
