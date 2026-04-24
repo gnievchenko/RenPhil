@@ -1320,74 +1320,79 @@ export function formatGBP(amount: number): string {
   }).format(amount);
 }
 
+// Curated Unsplash photos per category, aligned with item order within each category.
+// Each array index maps to the Nth item in that category (see assignment in getEquipmentImage).
 const CATEGORY_PHOTOS: Record<Category, string[]> = {
   "3D Printing & Fabrication": [
-    "photo-1642969164999-979483e21601",
-    "photo-1705475025559-ad8efdedc74f",
-    "photo-1611117775350-ac3950990985",
-    "photo-1702390600380-5dc2bb300025",
-    "photo-1603974739154-7b055aeec101",
+    "photo-1642969164999-979483e21601", // Formlabs Form 4 → SLA printer with blue light
+    "photo-1549563316-5384a923453e", // Ultimaker S5 Pro → person observing 3D printer
+    "photo-1702863361902-93c51bfbd923", // CELLINK BIO X → small desktop bioprinter
+    "photo-1611505982706-9ebc79e5d3f1", // Prusa MK4S Farm → industrial 3D printing
+    "photo-1638959492386-f9a68d55c374", // Markforged Metal X → industrial dark printer
   ],
   "Biochemistry & Cell Culture": [
-    "photo-1602052577122-f73b9710adba",
-    "photo-1526930382372-67bf22c0fce2",
-    "photo-1668600418823-6d4dd4e74353",
-    "photo-1646956141271-05281b4ef472",
-    "photo-1646956141627-ef880b3ef654",
+    "photo-1748002897584-af9200c9b181", // BioFlo 320 → operator at complex bioreactor
+    "photo-1623986854615-85baba27dfb6", // Sartorius ambr 250 → industrial lab rig
+    "photo-1748003047892-04bb794257c6", // Mammalian cell culture suite → lab team
+    "photo-1748002645678-7f9c04263315", // BSL-2 fermentation hall → factory-scale
+    "photo-1748348209623-906c42dd1f7b", // Applikon MiniBio 250 → technicians + kit
   ],
   "Chromatography": [
-    "photo-1606206848010-83949917a080",
-    "photo-1606206886378-e49a19ad0933",
-    "photo-1646956141700-55bd6bc59d95",
-    "photo-1646956141733-2d456a4d337a",
+    "photo-1748261347768-a32434751a9a", // Agilent 1290 UPLC → scientist with pipette
+    "photo-1578496479531-32e296d5c6e1", // ÄKTA FPLC → samples in lab machine
+    "photo-1725404343886-a111bc5555c1", // Thermo Vanquish HPLC → flasks in lab
+    "photo-1554475901-4538ddfbccc2", // Agilent GC-MS → person with flasks
   ],
   "Mass Spectrometry": [
-    "photo-1727091506038-5451111dc2fb",
-    "photo-1657778752180-53adc732cf9e",
-    "photo-1657778753022-ccdb15b28eb4",
-    "photo-1657778752125-e981b86920a3",
+    "photo-1727091506038-5451111dc2fb", // Q Exactive HF → gloved hands on instrument
+    "photo-1748256223955-5d5eb7fe7893", // Waters Xevo → industrial lab equipment
+    "photo-1623986854615-85baba27dfb6", // Bruker MALDI → industrial equipment
+    "photo-1748002897584-af9200c9b181", // SCIEX Triple Quad → operator at complex kit
   ],
   "Microscopy & Imaging": [
-    "photo-1532187863486-abf9dbad1b69",
-    "photo-1582719471384-894fbb16e074",
-    "photo-1518152006812-edab29b069ac",
-    "photo-1606206873764-fd15e242df52",
-    "photo-1579154204601-01588f351e67",
+    "photo-1526930382372-67bf22c0fce2", // Zeiss Sigma SEM → white microscope
+    "photo-1614308460927-5024ba2e1dcb", // JEOL TEM → round silver/black microscope
+    "photo-1639772823907-a716be4bdecc", // Leica SP8 Confocal → gloved hand at scope
+    "photo-1572884267966-02340ebc90ac", // Bruker Dimension AFM → black microscope
+    "photo-1562789233-495f52b583dd", // Andor Dragonfly → scientist at microscope
   ],
   "Spectroscopy": [
-    "photo-1614935151651-0bea6508db6b",
-    "photo-1604313890727-5542ff314405",
-    "photo-1613541444690-101563066156",
-    "photo-1618053448492-2b629c2c912c",
+    "photo-1532187863486-abf9dbad1b69", // Bruker 600 NMR → tube sample prep
+    "photo-1554475900-0a0350e3fc7b", // Renishaw Raman → lab apparatus
+    "photo-1532187643603-ba119ca4109e", // Thermo Nicolet FTIR → pouring liquid
+    "photo-1655814563963-0fe0a7d6c279", // Agilent Cary UV-Vis → lab coat scientist
   ],
   "Materials Characterization": [
-    "photo-1532094349884-543bc11b234d",
-    "photo-1605781231474-f60dea478e8a",
-    "photo-1707944746058-4da338d0f827",
-    "photo-1595311182166-d63273ddc386",
+    "photo-1748002897584-af9200c9b181", // Bruker D8 XRD → operator at complex kit
+    "photo-1623986854615-85baba27dfb6", // TA DSC/TGA → industrial equipment
+    "photo-1748003047892-04bb794257c6", // Anton Paar MCR rheometer → lab team
+    "photo-1748348209623-906c42dd1f7b", // Bruker ContourX profilometer → technicians
   ],
   "Synthesis & Reactors": [
-    "photo-1581093577421-f561a654a353",
-    "photo-1524683745036-b46f52b8505a",
-    "photo-1597765206445-a28d547c86f1",
-    "photo-1518152006812-edab29b069ac",
+    "photo-1694230155228-cdde50083573", // Schlenk + glovebox → test tubes / reagents
+    "photo-1532094349884-543bc11b234d", // Parr autoclave → lab beakers
+    "photo-1554475900-0a0350e3fc7b", // Vapourtec flow reactor → lab apparatus
+    "photo-1725404343886-a111bc5555c1", // CEM microwave → flasks with liquid
   ],
   "Genomics & Sequencing": [
-    "photo-1578496479530-799fd6d0803a",
-    "photo-1579154204845-5d7f8d4dc785",
-    "photo-1579154204449-47c454770447",
+    "photo-1641903202531-bfa6bf0c6419", // NovaSeq X Plus → DNA visualisation
+    "photo-1648792940059-3b782a7b8b20", // Oxford Nanopore → DNA helix
+    "photo-1578496479531-32e296d5c6e1", // QX200 ddPCR → samples in lab machine
   ],
   "Physics & Specialized": [
-    "photo-1518152006812-edab29b069ac",
-    "photo-1606206886378-e49a19ad0933",
-    "photo-1532094349884-543bc11b234d",
+    "photo-1640861774479-cd6453479851", // Femtosecond laser table → green laser beam
+    "photo-1571131551165-8a81db403a9a", // Cryostat → beam in dark room
+    "photo-1715583622659-566c3a8b3c5a", // Plasma cleaner → intense glow
   ],
 };
 
 export function getEquipmentImage(item: Equipment, width = 800): string {
   const pool = CATEGORY_PHOTOS[item.category];
-  const index = (parseInt(item.id, 10) - 1) % pool.length;
-  return `https://images.unsplash.com/${pool[index]}?w=${width}&h=${Math.round(
+  const itemsInCategory = equipment.filter((e) => e.category === item.category);
+  const indexInCategory = itemsInCategory.findIndex((e) => e.id === item.id);
+  const photoId =
+    pool[(indexInCategory >= 0 ? indexInCategory : 0) % pool.length];
+  return `https://images.unsplash.com/${photoId}?w=${width}&h=${Math.round(
     width * 0.75,
   )}&fit=crop&auto=format&q=80`;
 }
