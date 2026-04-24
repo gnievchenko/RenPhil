@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   equipment,
   formatGBP,
   getEquipmentBySlug,
+  getEquipmentImage,
 } from "@/lib/equipment";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -36,12 +38,20 @@ export default async function EquipmentDetailPage({
         </Link>
 
         <div
-          className="aspect-[21/9] w-full overflow-hidden rounded-2xl"
+          className="relative aspect-[21/9] w-full overflow-hidden rounded-2xl"
           style={{
             backgroundImage: `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})`,
           }}
-          aria-hidden="true"
-        />
+        >
+          <Image
+            src={getEquipmentImage(item, 1600)}
+            alt={item.title}
+            fill
+            sizes="(min-width:1024px) 960px, 100vw"
+            className="object-cover"
+            priority
+          />
+        </div>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_360px]">
           <div className="space-y-8">

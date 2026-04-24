@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { type Equipment, formatGBP } from "@/lib/equipment";
+import Image from "next/image";
+import {
+  type Equipment,
+  formatGBP,
+  getEquipmentImage,
+} from "@/lib/equipment";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -8,12 +13,19 @@ export function EquipmentCard({ item }: { item: Equipment }) {
     <Link href={`/equipment/${item.slug}`} className="group">
       <Card className="h-full overflow-hidden pt-0 transition group-hover:shadow-lg">
         <div
-          className="aspect-[4/3] w-full"
+          className="relative aspect-[4/3] w-full overflow-hidden"
           style={{
             backgroundImage: `linear-gradient(135deg, ${item.gradient[0]}, ${item.gradient[1]})`,
           }}
-          aria-hidden="true"
-        />
+        >
+          <Image
+            src={getEquipmentImage(item, 800)}
+            alt={item.title}
+            fill
+            sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw"
+            className="object-cover transition duration-500 group-hover:scale-[1.03]"
+          />
+        </div>
         <CardContent className="space-y-3 px-5 pb-5">
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-semibold leading-tight">{item.title}</h3>
