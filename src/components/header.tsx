@@ -17,7 +17,7 @@ export function Header() {
             className="cursor-default opacity-50"
             title="Coming soon"
           >
-            Become an experiment provider
+            Become a lab host
           </span>
           <span
             className="cursor-default opacity-50"
