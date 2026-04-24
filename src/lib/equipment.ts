@@ -1320,79 +1320,78 @@ export function formatGBP(amount: number): string {
   }).format(amount);
 }
 
-// Curated Unsplash photos per category, aligned with item order within each category.
-// Each array index maps to the Nth item in that category (see assignment in getEquipmentImage).
+// Curated per-item photos, mixing Wikimedia Commons (specific instruments) and
+// Unsplash (generic lab imagery). Each array entry maps to the Nth item in that
+// category, so index 0 = first item in category, index 1 = second, etc.
+const WIKI = "https://upload.wikimedia.org/wikipedia/commons/thumb";
+const UNSPLASH = "https://images.unsplash.com";
 const CATEGORY_PHOTOS: Record<Category, string[]> = {
   "3D Printing & Fabrication": [
-    "photo-1642969164999-979483e21601", // Formlabs Form 4 → SLA printer with blue light
-    "photo-1549563316-5384a923453e", // Ultimaker S5 Pro → person observing 3D printer
-    "photo-1702863361902-93c51bfbd923", // CELLINK BIO X → small desktop bioprinter
-    "photo-1611505982706-9ebc79e5d3f1", // Prusa MK4S Farm → industrial 3D printing
-    "photo-1638959492386-f9a68d55c374", // Markforged Metal X → industrial dark printer
+    `${WIKI}/3/3a/Black_3D_printer.jpg/1280px-Black_3D_printer.jpg`, // Formlabs Form 4 → desktop 3D printer
+    `${WIKI}/6/68/Bambu_Lab_X1_Carbon_with_AMS_module.jpg/1280px-Bambu_Lab_X1_Carbon_with_AMS_module.jpg`, // Ultimaker S5 Pro → enclosed FDM with material station
+    `${WIKI}/2/24/Biobot_1_edited.jpg/1280px-Biobot_1_edited.jpg`, // CELLINK BIO X → actual bioprinter
+    `${WIKI}/d/d0/Large_delta-style_3D_printer.jpg/1280px-Large_delta-style_3D_printer.jpg`, // Prusa Farm → large/parallel printer
+    `${WIKI}/9/95/Imprimante_3D_%28Ammerschwihr%29.jpg/1280px-Imprimante_3D_%28Ammerschwihr%29.jpg`, // Markforged Metal X → industrial printer
   ],
   "Biochemistry & Cell Culture": [
-    "photo-1748002897584-af9200c9b181", // BioFlo 320 → operator at complex bioreactor
-    "photo-1623986854615-85baba27dfb6", // Sartorius ambr 250 → industrial lab rig
-    "photo-1748003047892-04bb794257c6", // Mammalian cell culture suite → lab team
-    "photo-1748002645678-7f9c04263315", // BSL-2 fermentation hall → factory-scale
-    "photo-1748348209623-906c42dd1f7b", // Applikon MiniBio 250 → technicians + kit
+    `${WIKI}/1/10/Bench-scale_Bioreactor.JPG/1280px-Bench-scale_Bioreactor.JPG`, // Eppendorf BioFlo 320 → bench bioreactor
+    `${WIKI}/f/f2/Single-use_bioreactor.jpg/1280px-Single-use_bioreactor.jpg`, // Sartorius ambr 250 → single-use bioreactor
+    `${WIKI}/0/08/Bioreactor_for_cell_culture_in_the_laboratory.jpg/1280px-Bioreactor_for_cell_culture_in_the_laboratory.jpg`, // Cell culture suite → cell culture bioreactor
+    `${WIKI}/7/73/Industrial_STR_Bioreactor.jpg/1280px-Industrial_STR_Bioreactor.jpg`, // BSL-2 fermentation hall → industrial 50L
+    `${WIKI}/b/b9/Airlift_bioreactor.jpg/1280px-Airlift_bioreactor.jpg`, // Applikon MiniBio 250 → airlift bioreactor
   ],
   "Chromatography": [
-    "photo-1748261347768-a32434751a9a", // Agilent 1290 UPLC → scientist with pipette
-    "photo-1578496479531-32e296d5c6e1", // ÄKTA FPLC → samples in lab machine
-    "photo-1725404343886-a111bc5555c1", // Thermo Vanquish HPLC → flasks in lab
-    "photo-1554475901-4538ddfbccc2", // Agilent GC-MS → person with flasks
+    `${WIKI}/3/32/Liquid_chromatograph_Agilent_1200.jpg/1280px-Liquid_chromatograph_Agilent_1200.jpg`, // Agilent 1290 UPLC → actual Agilent 1200!
+    `${WIKI}/a/a9/Kapalinov%C3%BD_chromatograf_1.jpg/1280px-Kapalinov%C3%BD_chromatograf_1.jpg`, // ÄKTA FPLC → generic LC
+    `${WIKI}/5/56/Thermo_LC_%28Liquid_Chromatograph%29_%2B_LTQ_%28Linear_Trap_Quadrupole%29.jpg/1280px-Thermo_LC_%28Liquid_Chromatograph%29_%2B_LTQ_%28Linear_Trap_Quadrupole%29.jpg`, // Thermo Vanquish → actual Thermo LC!
+    `${WIKI}/7/77/Agilent_LC-MS.jpg/1280px-Agilent_LC-MS.jpg`, // Agilent GC-MS → actual Agilent LC-MS
   ],
   "Mass Spectrometry": [
-    "photo-1727091506038-5451111dc2fb", // Q Exactive HF → gloved hands on instrument
-    "photo-1748256223955-5d5eb7fe7893", // Waters Xevo → industrial lab equipment
-    "photo-1623986854615-85baba27dfb6", // Bruker MALDI → industrial equipment
-    "photo-1748002897584-af9200c9b181", // SCIEX Triple Quad → operator at complex kit
+    `${WIKI}/3/37/Agilent_6538_Ultra_High_Definition_%28UHD%29_Accurate-Mass_Q-TOF.jpg/1280px-Agilent_6538_Ultra_High_Definition_%28UHD%29_Accurate-Mass_Q-TOF.jpg`, // Q Exactive HF → Agilent Q-TOF (high-res like Orbitrap)
+    `${WIKI}/6/6a/Cromat%C3%B3grafo_de_l%C3%ADquidos_WATERS.jpg/1280px-Cromat%C3%B3grafo_de_l%C3%ADquidos_WATERS.jpg`, // Waters Xevo → actual Waters!
+    `${WIKI}/8/8d/Fenn_ESI_Instrument.jpg/1280px-Fenn_ESI_Instrument.jpg`, // Bruker MALDI → ESI instrument
+    `${WIKI}/6/68/Iontrap.JPG/1280px-Iontrap.JPG`, // SCIEX Triple Quad → ion trap MS
   ],
   "Microscopy & Imaging": [
-    "photo-1526930382372-67bf22c0fce2", // Zeiss Sigma SEM → white microscope
-    "photo-1614308460927-5024ba2e1dcb", // JEOL TEM → round silver/black microscope
-    "photo-1639772823907-a716be4bdecc", // Leica SP8 Confocal → gloved hand at scope
-    "photo-1572884267966-02340ebc90ac", // Bruker Dimension AFM → black microscope
-    "photo-1562789233-495f52b583dd", // Andor Dragonfly → scientist at microscope
+    `${WIKI}/8/80/Fluorescence_microscope.jpg/1280px-Fluorescence_microscope.jpg`, // Zeiss Sigma SEM → fluorescence scope (best optical available)
+    `${WIKI}/a/a5/Confocal_microscopy_work_station_at_NIN%2C_Hyderabad.jpg/1280px-Confocal_microscopy_work_station_at_NIN%2C_Hyderabad.jpg`, // JEOL TEM → full imaging workstation
+    `${WIKI}/4/47/Confocal_Microscope.jpg/1280px-Confocal_Microscope.jpg`, // Leica SP8 Confocal → actual confocal!
+    `${WIKI}/9/95/AFM_Nanoscope_IIIa.jpg/1280px-AFM_Nanoscope_IIIa.jpg`, // Bruker Dimension AFM → actual AFM!
+    `${WIKI}/9/92/Custom_Nikon_RCM8000_Real-Time_Confocal-Multi-Photon_Microscope_-_CRBS.jpg/1280px-Custom_Nikon_RCM8000_Real-Time_Confocal-Multi-Photon_Microscope_-_CRBS.jpg`, // Andor Dragonfly → Nikon multi-photon confocal
   ],
   "Spectroscopy": [
-    "photo-1532187863486-abf9dbad1b69", // Bruker 600 NMR → tube sample prep
-    "photo-1554475900-0a0350e3fc7b", // Renishaw Raman → lab apparatus
-    "photo-1532187643603-ba119ca4109e", // Thermo Nicolet FTIR → pouring liquid
-    "photo-1655814563963-0fe0a7d6c279", // Agilent Cary UV-Vis → lab coat scientist
+    `${WIKI}/b/b2/NMR_Spectrometer.jpg/1280px-NMR_Spectrometer.jpg`, // Bruker 600 NMR → actual NMR!
+    `${WIKI}/4/4c/Confocal_Raman_microscope.jpg/1280px-Confocal_Raman_microscope.jpg`, // Renishaw inVia → actual Raman!
+    `${WIKI}/9/98/Confocal_Raman_imaging_microscope_Witec_alpha300_.jpg/1280px-Confocal_Raman_imaging_microscope_Witec_alpha300_.jpg`, // Nicolet FTIR → imaging spectrometer
+    `${WIKI}/0/04/NTEGRA_Spectra_II_and_measuring_heads.jpg/1280px-NTEGRA_Spectra_II_and_measuring_heads.jpg`, // Cary UV-Vis → NTEGRA Spectra
   ],
   "Materials Characterization": [
-    "photo-1748002897584-af9200c9b181", // Bruker D8 XRD → operator at complex kit
-    "photo-1623986854615-85baba27dfb6", // TA DSC/TGA → industrial equipment
-    "photo-1748003047892-04bb794257c6", // Anton Paar MCR rheometer → lab team
-    "photo-1748348209623-906c42dd1f7b", // Bruker ContourX profilometer → technicians
+    `${WIKI}/7/74/Dyfraktometr_rentgenowski_%28XRD%29.JPG/1280px-Dyfraktometr_rentgenowski_%28XRD%29.JPG`, // Bruker D8 XRD → actual XRD!
+    `${WIKI}/f/f9/CSIRO_ScienceImage_426_XRay_Crystallography_Equipment.jpg/1280px-CSIRO_ScienceImage_426_XRay_Crystallography_Equipment.jpg`, // TA DSC/TGA → crystallography lab
+    `${WIKI}/7/7a/Park_Systems_NX-series_Atomic_Force_Microscope.jpg/1280px-Park_Systems_NX-series_Atomic_Force_Microscope.jpg`, // Anton Paar MCR rheometer → Park Systems (similar box-on-table shape)
+    `${WIKI}/c/ce/Platform_for_protein_crystallography_and_X-ray_scattering.jpg/1280px-Platform_for_protein_crystallography_and_X-ray_scattering.jpg`, // Bruker ContourX profilometer → measurement platform
   ],
   "Synthesis & Reactors": [
-    "photo-1694230155228-cdde50083573", // Schlenk + glovebox → test tubes / reagents
-    "photo-1532094349884-543bc11b234d", // Parr autoclave → lab beakers
-    "photo-1554475900-0a0350e3fc7b", // Vapourtec flow reactor → lab apparatus
-    "photo-1725404343886-a111bc5555c1", // CEM microwave → flasks with liquid
+    `${UNSPLASH}/photo-1694230155228-cdde50083573?w=1280&auto=format&q=80`, // Schlenk + glovebox → test tubes with colored liquids
+    `${UNSPLASH}/photo-1532094349884-543bc11b234d?w=1280&auto=format&q=80`, // Parr autoclave → beakers
+    `${UNSPLASH}/photo-1554475900-0a0350e3fc7b?w=1280&auto=format&q=80`, // Vapourtec flow reactor → lab apparatus
+    `${UNSPLASH}/photo-1725404343886-a111bc5555c1?w=1280&auto=format&q=80`, // CEM microwave → flasks with liquid
   ],
   "Genomics & Sequencing": [
-    "photo-1641903202531-bfa6bf0c6419", // NovaSeq X Plus → DNA visualisation
-    "photo-1648792940059-3b782a7b8b20", // Oxford Nanopore → DNA helix
-    "photo-1578496479531-32e296d5c6e1", // QX200 ddPCR → samples in lab machine
+    `${WIKI}/a/a2/NovaSeq_6000.jpg/1280px-NovaSeq_6000.jpg`, // NovaSeq X Plus → actual Illumina NovaSeq!
+    `${WIKI}/0/03/Oxford_Nanopore_MinION_connected_to_a_Mac_via_USB.jpg/1280px-Oxford_Nanopore_MinION_connected_to_a_Mac_via_USB.jpg`, // Oxford Nanopore PromethION → actual Oxford Nanopore MinION!
+    `${WIKI}/7/7b/Illumina_MiSeq_sequencer.jpg/1280px-Illumina_MiSeq_sequencer.jpg`, // QX200 ddPCR → benchtop Illumina MiSeq
   ],
   "Physics & Specialized": [
-    "photo-1640861774479-cd6453479851", // Femtosecond laser table → green laser beam
-    "photo-1571131551165-8a81db403a9a", // Cryostat → beam in dark room
-    "photo-1715583622659-566c3a8b3c5a", // Plasma cleaner → intense glow
+    `${UNSPLASH}/photo-1640861774479-cd6453479851?w=1280&auto=format&q=80`, // Femtosecond laser table → green laser beam
+    `${UNSPLASH}/photo-1571131551165-8a81db403a9a?w=1280&auto=format&q=80`, // Cryostat → beam in dark room
+    `${UNSPLASH}/photo-1715583622659-566c3a8b3c5a?w=1280&auto=format&q=80`, // Plasma cleaner → intense glow
   ],
 };
 
-export function getEquipmentImage(item: Equipment, width = 800): string {
+export function getEquipmentImage(item: Equipment): string {
   const pool = CATEGORY_PHOTOS[item.category];
   const itemsInCategory = equipment.filter((e) => e.category === item.category);
   const indexInCategory = itemsInCategory.findIndex((e) => e.id === item.id);
-  const photoId =
-    pool[(indexInCategory >= 0 ? indexInCategory : 0) % pool.length];
-  return `https://images.unsplash.com/${photoId}?w=${width}&h=${Math.round(
-    width * 0.75,
-  )}&fit=crop&auto=format&q=80`;
+  return pool[(indexInCategory >= 0 ? indexInCategory : 0) % pool.length];
 }

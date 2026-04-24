@@ -44,7 +44,7 @@ export default async function EquipmentDetailPage({
           }}
         >
           <Image
-            src={getEquipmentImage(item, 1600)}
+            src={getEquipmentImage(item)}
             alt={item.title}
             fill
             sizes="(min-width:1024px) 960px, 100vw"
